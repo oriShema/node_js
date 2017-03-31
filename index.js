@@ -11,12 +11,12 @@ exports.addMessage = functions.https.onRequest((req, res) => {
   const original = req.query.text;
   // Push it into the Realtime Database then send a response
   var root = admin.database().ref('/user-lists/'+original).once('value').then(function(snapshot) {
-	var str = "";
+	var str = snapshot.key;
 	snapshot.forEach(function(childSnapshot) {
     var childKey = childSnapshot.key;
     var childData = childSnapshot.val();
 	console.log(childKey);
-    str += childKey +", " + childData+"/n";
+    str = childKey;
   });
 	
 	res.send("Success "+ str);
